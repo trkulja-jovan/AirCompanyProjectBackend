@@ -1,0 +1,3 @@
+rootProject.name = 'AirlineBackend'
+include ':AirlineJPA'
+project(':AirlineJPA').projectDir = new File("../AirlineJPA")
