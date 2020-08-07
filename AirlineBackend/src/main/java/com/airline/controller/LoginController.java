@@ -33,5 +33,10 @@ public class LoginController {
 	public ResponseEntity<Boolean> checkValidityOfUsername(@RequestBody String value){
 		return loginService.checkValidity(value);
 	}
+	
+	@PostMapping("/logout")
+	public ResponseEntity<Boolean> logoutUser(@RequestBody TokenDto data){
+		return loginService.logoutUser(data);
+	}
 
 }

@@ -30,7 +30,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 	@Override
 	public ResponseEntity<TokenDto> tryToLogin(UserDto user) {
 		
-		if(super.existsUser(user.getUsername())) {
+		if(super.existsUserByPassword(user.getUsername(), user.getPassword())) {
 			var token = BCrypt.gensalt(31);
 			
 			var tokenData = new TokenDto();
@@ -76,5 +76,18 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			return ResponseEntity.ok(false);
 		}
 		
+	}
+	
+	@Override
+	public ResponseEntity<Boolean> logoutUser(TokenDto data){
+		
+		try {
+			var username = data.getUser().getUsername();
+			var token = data.getToken();
+			
+			return ResponseEntity.ok(super.removeLoginUser(username, token));
+		} catch(Exception e) {
+			return new ResponseEntity<>(BAD_REQUEST);
+		}
 	}
 }

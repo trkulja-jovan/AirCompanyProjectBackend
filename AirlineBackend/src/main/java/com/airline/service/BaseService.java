@@ -14,7 +14,7 @@ import AirlineJPA.Korisnik;
 
 public class BaseService {
 	
-	private Map<String, String> loginUsers;
+	private static Map<String, String> loginUsers;
 	
 	@Autowired
 	KorisnikRepository userR;
@@ -25,7 +25,7 @@ public class BaseService {
 	@Autowired
 	IMapper<Korisnik, FullUserDto> _mapper;
 	
-	protected BaseService() { 
+	static {
 		loginUsers = new HashMap<String, String>();
 	}
 	
@@ -33,6 +33,15 @@ public class BaseService {
 		
 		loginUsers.put(username, token);
 		return true;
+	}
+	
+	protected Boolean removeLoginUser(String username, String token) {
+		try {
+			loginUsers.remove(username, token);
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
 	}
 	
 	protected FullUserDto getUserForToken(String token) {
@@ -50,10 +59,14 @@ public class BaseService {
 		
 	}
 	
-	protected Boolean isLogged(String username) {
+	protected Boolean isLogged(String token) {
 		
-		return loginUsers.get(username) != null;
+		return loginUsers.containsValue(token);
 	
+	}
+	
+	protected Boolean existsUserByPassword(String username, String password) {
+		return loginRep.existsLogindataByUsernameAndPassword(username, password) != null;
 	}
 	
 	protected Boolean existsUser(String username) {
