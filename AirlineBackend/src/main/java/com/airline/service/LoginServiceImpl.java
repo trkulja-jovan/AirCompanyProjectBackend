@@ -1,7 +1,5 @@
 package com.airline.service;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import com.airline.repository.KorisnikRepository;
 import AirlineJPA.Korisnik;
 
 @Service
+@SuppressWarnings("unchecked")
 class LoginServiceImpl extends BaseService implements ILoginService {
 	
 	@Autowired
@@ -39,10 +38,10 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			
 			super.addLoginUser(user.getUsername(), token);
 			
-			return ResponseEntity.ok(tokenData);
+			return super.ok(tokenData);
 		}
 		
-		return new ResponseEntity<>(BAD_REQUEST);
+		return super.badRequest();
 	}
 	
 	@Override
@@ -54,7 +53,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			
 			registerR.save(user);
 			
-			return ResponseEntity.ok(true);
+			return super.ok(true);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -70,7 +69,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 		try {
 			var username = (String) p.object().get("username");
 			
-			return ResponseEntity.ok(super.existsUser(username));
+			return super.ok(super.existsUser(username));
 			
 		} catch(ParseException e) {
 			return ResponseEntity.ok(false);
@@ -85,9 +84,9 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			var username = data.getUser().getUsername();
 			var token = data.getToken();
 			
-			return ResponseEntity.ok(super.removeLoginUser(username, token));
+			return super.ok(super.removeLoginUser(username, token));
 		} catch(Exception e) {
-			return new ResponseEntity<>(BAD_REQUEST);
+			return super.badRequest();
 		}
 	}
 }

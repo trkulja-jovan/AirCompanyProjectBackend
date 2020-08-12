@@ -13,7 +13,6 @@ public class AerodromDto {
 	private String code;
 	private String drzava;
 	private String grad;
-	private LetDto let;
 
 	
 }

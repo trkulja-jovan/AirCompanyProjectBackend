@@ -14,4 +14,14 @@ class MapperImpl<S, D> implements IMapper<S, D> {
 		return _mapper.convertValue(source, destination);
 	}
 	
+	@Override
+	public D mapFromJson(String json, Class<D> destination) {
+		try {
+			return _mapper.readValue(json, destination);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

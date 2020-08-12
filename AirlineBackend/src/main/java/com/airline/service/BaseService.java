@@ -1,17 +1,25 @@
 package com.airline.service;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import com.airline.dto.FullUserDto;
+import com.airline.dto.KlasaDto;
 import com.airline.mapper.IMapper;
 import com.airline.repository.KorisnikRepository;
 import com.airline.repository.LoginRepository;
 
+import AirlineJPA.Klasa;
 import AirlineJPA.Korisnik;
 
+@SuppressWarnings("rawtypes")
 public class BaseService {
 	
 	private static Map<String, String> loginUsers;
@@ -24,6 +32,9 @@ public class BaseService {
 	
 	@Autowired
 	IMapper<Korisnik, FullUserDto> _mapper;
+	
+	@Autowired
+	IMapper<Klasa, KlasaDto> _mapperKlasa;
 	
 	static {
 		loginUsers = new HashMap<String, String>();
@@ -60,9 +71,7 @@ public class BaseService {
 	}
 	
 	protected Boolean isLogged(String token) {
-		
 		return loginUsers.containsValue(token);
-	
 	}
 	
 	protected Boolean existsUserByPassword(String username, String password) {
@@ -73,6 +82,15 @@ public class BaseService {
 		return loginRep.existsLogindataByUsername(username);
 	}
 	
+	protected ResponseEntity unauthorizedRequest() {
+		return new ResponseEntity<>(UNAUTHORIZED);
+	}
 	
-
+	protected ResponseEntity badRequest() {
+		return new ResponseEntity<>(BAD_REQUEST);
+	}
+	
+	protected static <T> ResponseEntity<T> ok(T body){
+		return new ResponseEntity<T>(body, OK);
+	}
 }

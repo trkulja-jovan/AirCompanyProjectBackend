@@ -1,5 +1,7 @@
 package com.airline.dto;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +11,12 @@ import lombok.Setter;
 @Setter
 public class LetDto {
 	
-	Integer idLet;
-	String oznakaLeta;
-    AviokompanijaDto aviokompanija;
-	PodaciLetaDto podaciLeta;
+	private Integer idLet;
+	private String oznakaLeta;
+	private Double cena;
+	
+	private List<KlasaDto> klasa;
+    private AviokompanijaDto aviokompanija;
+	private PodaciLetaDto podaciLeta;
 
 }
