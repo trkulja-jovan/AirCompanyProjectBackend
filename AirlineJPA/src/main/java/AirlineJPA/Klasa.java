@@ -1,8 +1,16 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 /**
@@ -20,9 +28,11 @@ public class Klasa implements Serializable {
 
 	private String naziv;
 
-	//bi-directional many-to-one association to Karta
-	@OneToMany(mappedBy="klasa")
-	private List<Karta> kartas;
+	//bi-directional many-to-one association to Let
+	@JsonIgnore
+	@ManyToOne
+	@JsonBackReference
+	private Let let;
 
 	public Klasa() {
 	}
@@ -42,27 +52,28 @@ public class Klasa implements Serializable {
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
-
-	public List<Karta> getKartas() {
-		return this.kartas;
+	
+	@JsonIgnore
+	public Let getLet() {
+		return this.let;
 	}
 
-	public void setKartas(List<Karta> kartas) {
-		this.kartas = kartas;
+	@JsonIgnore
+	public void setLet(Let let) {
+		this.let = let;
 	}
-
-	public Karta addKarta(Karta karta) {
-		getKartas().add(karta);
-		karta.setKlasa(this);
-
-		return karta;
+	
+	@Override
+	public String toString() {
+		return this.naziv;
 	}
-
-	public Karta removeKarta(Karta karta) {
-		getKartas().remove(karta);
-		karta.setKlasa(null);
-
-		return karta;
+	
+	public String getJson() {
+		return "{"
+				+ " \"idKlasa\":" + this.idKlasa + ","
+				+ "\"naziv\":" + "\"" + this.naziv + "\""
+				+ "}";
+				
 	}
 
 }

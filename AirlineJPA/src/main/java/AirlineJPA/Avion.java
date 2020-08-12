@@ -1,7 +1,15 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 
 /**
@@ -25,6 +33,7 @@ public class Avion implements Serializable {
 
 	//bi-directional many-to-one association to Aviokompanija
 	@ManyToOne
+	@JsonBackReference
 	private Aviokompanija aviokompanija;
 
 	public Avion() {
@@ -68,6 +77,11 @@ public class Avion implements Serializable {
 
 	public void setAviokompanija(Aviokompanija aviokompanija) {
 		this.aviokompanija = aviokompanija;
+	}
+	
+	@Override
+	public String toString() {
+		return this.serijskiBroj + " | " + this.tipAviona;
 	}
 
 }

@@ -1,8 +1,18 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 
 /**
@@ -24,14 +34,17 @@ public class Aviokompanija implements Serializable {
 
 	//bi-directional many-to-many association to Aerodrom
 	@ManyToMany(mappedBy="aviokompanijas")
+	@JsonIgnore
 	private List<Aerodrom> aerodroms;
 
 	//bi-directional many-to-one association to Avion
 	@OneToMany(mappedBy="aviokompanija")
+	@JsonManagedReference
 	private List<Avion> avions;
 
 	//bi-directional many-to-one association to Let
 	@OneToMany(mappedBy="aviokompanija")
+	@JsonManagedReference
 	private List<Let> lets;
 
 	public Aviokompanija() {

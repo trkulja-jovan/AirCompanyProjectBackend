@@ -20,9 +20,6 @@ public class Podacileta implements Serializable {
 	private int idPodaciLeta;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date datumDolaska;
-
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date datumPolaska;
 
 	//bi-directional many-to-one association to Let
@@ -48,14 +45,6 @@ public class Podacileta implements Serializable {
 
 	public void setIdPodaciLeta(int idPodaciLeta) {
 		this.idPodaciLeta = idPodaciLeta;
-	}
-
-	public Date getDatumDolaska() {
-		return this.datumDolaska;
-	}
-
-	public void setDatumDolaska(Date datumDolaska) {
-		this.datumDolaska = datumDolaska;
 	}
 
 	public Date getDatumPolaska() {

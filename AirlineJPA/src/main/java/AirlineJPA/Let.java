@@ -1,8 +1,21 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 
 /**
@@ -22,14 +35,17 @@ public class Let implements Serializable {
 
 	//bi-directional many-to-one association to Karta
 	@OneToMany(mappedBy="let")
+	@JsonManagedReference
 	private List<Karta> kartas;
 
 	//bi-directional many-to-one association to Aviokompanija
 	@ManyToOne
+	@JsonBackReference
 	private Aviokompanija aviokompanija;
 
 	//bi-directional many-to-one association to Podacileta
 	@ManyToOne
+	@JsonBackReference
 	private Podacileta podacileta;
 
 	//bi-directional many-to-many association to Usluga
@@ -47,7 +63,12 @@ public class Let implements Serializable {
 
 	//bi-directional many-to-one association to Sediste
 	@OneToMany(mappedBy="let")
+	@JsonManagedReference
 	private List<Sediste> sedistes;
+	
+	@OneToMany(mappedBy="let")
+	@JsonManagedReference
+	private List<Klasa> klasas;
 
 	public Let() {
 	}
@@ -120,6 +141,14 @@ public class Let implements Serializable {
 
 	public void setSedistes(List<Sediste> sedistes) {
 		this.sedistes = sedistes;
+	}
+	
+	public List<Klasa> getKlasas() {
+		return this.klasas;
+	}
+
+	public void setKlasas(List<Klasa> klasas) {
+		this.klasas = klasas;
 	}
 
 	public Sediste addSediste(Sediste sediste) {

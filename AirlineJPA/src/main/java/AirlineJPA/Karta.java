@@ -1,7 +1,18 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 
 /**
@@ -21,26 +32,36 @@ public class Karta implements Serializable {
 
 	private double cena;
 
-	private int sediste_idSediste;
-
-	//bi-directional many-to-one association to Klasa
-	@ManyToOne
-	private Klasa klasa;
-
-	//bi-directional many-to-one association to Korisnik
-	@ManyToOne
-	private Korisnik korisnik;
-
 	//bi-directional many-to-one association to Let
+	@JsonBackReference
 	@ManyToOne
 	private Let let;
-
-	//bi-directional one-to-one association to Sediste
-	@OneToOne
+	
+	@ManyToOne
+	@JsonBackReference
+	private Korisnik korisnik;
+	
+	@OneToOne(cascade = {CascadeType.ALL})
 	@JoinColumn(name="idKarta")
 	private Sediste sediste;
 
 	public Karta() {
+	}
+	
+	public Sediste getSediste() {
+		return this.sediste;
+	}
+	
+	public void setSediste(Sediste sediste) {
+		this.sediste = sediste;
+	}
+	
+	public Korisnik getKorisnik() {
+		return this.korisnik;
+	}
+	
+	public void setKorisnik(Korisnik korisnik) {
+		this.korisnik = korisnik;
 	}
 
 	public int getIdKarta() {
@@ -67,44 +88,12 @@ public class Karta implements Serializable {
 		this.cena = cena;
 	}
 
-	public int getSediste_idSediste() {
-		return this.sediste_idSediste;
-	}
-
-	public void setSediste_idSediste(int sediste_idSediste) {
-		this.sediste_idSediste = sediste_idSediste;
-	}
-
-	public Klasa getKlasa() {
-		return this.klasa;
-	}
-
-	public void setKlasa(Klasa klasa) {
-		this.klasa = klasa;
-	}
-
-	public Korisnik getKorisnik() {
-		return this.korisnik;
-	}
-
-	public void setKorisnik(Korisnik korisnik) {
-		this.korisnik = korisnik;
-	}
-
 	public Let getLet() {
 		return this.let;
 	}
 
 	public void setLet(Let let) {
 		this.let = let;
-	}
-
-	public Sediste getSediste() {
-		return this.sediste;
-	}
-
-	public void setSediste(Sediste sediste) {
-		this.sediste = sediste;
 	}
 
 }
