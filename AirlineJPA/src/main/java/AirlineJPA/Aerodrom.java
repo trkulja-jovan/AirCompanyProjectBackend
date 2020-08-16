@@ -143,5 +143,15 @@ public class Aerodrom implements Serializable {
 
 		return podaciletas2;
 	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idAerodrom\":" + this.idAerodrom + ","
+				+ "\"code\":" + "\"" + this.code + "\","
+				+ "\"drzava\":" + "\"" + this.drzava + "\","
+				+ "\"grad\":" + "\"" + this.grad + "\""
+				+ "}";
+				
+	}
 
 }

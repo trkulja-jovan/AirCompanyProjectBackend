@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
 
@@ -40,12 +39,10 @@ public class Let implements Serializable {
 
 	//bi-directional many-to-one association to Aviokompanija
 	@ManyToOne
-	@JsonBackReference
 	private Aviokompanija aviokompanija;
 
 	//bi-directional many-to-one association to Podacileta
 	@ManyToOne
-	@JsonBackReference
 	private Podacileta podacileta;
 
 	//bi-directional many-to-many association to Usluga
@@ -163,6 +160,16 @@ public class Let implements Serializable {
 		sediste.setLet(null);
 
 		return sediste;
+	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idLet\":" + this.idLet + ","
+				+ "\"oznakaLeta\":" + "\"" + this.oznakaLeta + "\","
+				+ "\"aviokompanija\":" + this.aviokompanija.getJson() + ","
+				+ "\"podaciLeta\":" + this.podacileta.getJson()
+				+ "}";
+				
 	}
 
 }

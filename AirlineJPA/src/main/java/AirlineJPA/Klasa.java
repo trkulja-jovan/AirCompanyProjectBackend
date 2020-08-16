@@ -70,7 +70,7 @@ public class Klasa implements Serializable {
 	
 	public String getJson() {
 		return "{"
-				+ " \"idKlasa\":" + this.idKlasa + ","
+				+ "\"idKlasa\":" + this.idKlasa + ","
 				+ "\"naziv\":" + "\"" + this.naziv + "\""
 				+ "}";
 				

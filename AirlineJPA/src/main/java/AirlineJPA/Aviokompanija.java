@@ -125,5 +125,13 @@ public class Aviokompanija implements Serializable {
 
 		return let;
 	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idAviokompanija\":" + this.idAviokompanija + ","
+				+ "\"nazivKompanije\":" + "\"" + this.nazivKompanije + "\""
+			 + "}";
+				
+	}
 
 }

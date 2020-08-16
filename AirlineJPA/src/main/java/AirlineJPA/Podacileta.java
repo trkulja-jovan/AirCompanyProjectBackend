@@ -92,5 +92,15 @@ public class Podacileta implements Serializable {
 	public void setAerodrom2(Aerodrom aerodrom2) {
 		this.aerodrom2 = aerodrom2;
 	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idPodaci\":" + this.idPodaciLeta + ","
+				+ "\"datumPolaska\":" + "\"" + this.datumPolaska.toString() + "\","
+				+ "\"aerodrom1\":" + this.aerodrom1.getJson() + ","
+				+ "\"aerodrom2\":" + this.aerodrom2.getJson() 
+				+ "}";
+				
+	}
 
 }
