@@ -1,6 +1,7 @@
 package com.airline.service;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -8,16 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 
+import com.airline.dto.AerodromDto;
 import com.airline.dto.FullUserDto;
-import com.airline.dto.KlasaDto;
+import com.airline.dto.LetDto;
 import com.airline.mapper.IMapper;
 import com.airline.repository.KorisnikRepository;
 import com.airline.repository.LoginRepository;
 
-import AirlineJPA.Klasa;
+import AirlineJPA.Aerodrom;
 import AirlineJPA.Korisnik;
+import AirlineJPA.Let;
 
 @SuppressWarnings("rawtypes")
 public class BaseService {
@@ -31,10 +35,22 @@ public class BaseService {
 	LoginRepository loginRep;
 	
 	@Autowired
-	IMapper<Korisnik, FullUserDto> _mapper;
+	protected @Lazy IMapper<Korisnik, FullUserDto> _mapper;
+	
+//	@Autowired
+//	protected @Lazy IMapper<Klasa, KlasaDto> _mapperKlasa;
 	
 	@Autowired
-	IMapper<Klasa, KlasaDto> _mapperKlasa;
+	protected @Lazy IMapper<Aerodrom, AerodromDto> _mapperAirport;
+	
+//	@Autowired
+//	protected @Lazy IMapper<Aviokompanija, AviokompanijaDto> _mapperAviokomp;
+//	
+//	@Autowired
+//	protected @Lazy IMapper<Podacileta, PodaciLetaDto> _mapperPodaci;
+	
+	@Autowired
+	protected @Lazy IMapper<Let, LetDto> _mapperLet;
 	
 	static {
 		loginUsers = new HashMap<String, String>();
@@ -47,12 +63,7 @@ public class BaseService {
 	}
 	
 	protected Boolean removeLoginUser(String username, String token) {
-		try {
-			loginUsers.remove(username, token);
-			return true;
-		} catch(Exception e) {
-			return false;
-		}
+		return loginUsers.remove(username, token);
 	}
 	
 	protected FullUserDto getUserForToken(String token) {
@@ -70,7 +81,7 @@ public class BaseService {
 		
 	}
 	
-	protected Boolean isLogged(String token) {
+	protected static Boolean isLogged(String token) {
 		return loginUsers.containsValue(token);
 	}
 	
@@ -82,11 +93,15 @@ public class BaseService {
 		return loginRep.existsLogindataByUsername(username);
 	}
 	
-	protected ResponseEntity unauthorizedRequest() {
+	protected static ResponseEntity notAcceptable() {
+		return new ResponseEntity<>(NOT_ACCEPTABLE);
+	}
+	
+	protected static ResponseEntity unauthorizedRequest() {
 		return new ResponseEntity<>(UNAUTHORIZED);
 	}
 	
-	protected ResponseEntity badRequest() {
+	protected static ResponseEntity badRequest() {
 		return new ResponseEntity<>(BAD_REQUEST);
 	}
 	

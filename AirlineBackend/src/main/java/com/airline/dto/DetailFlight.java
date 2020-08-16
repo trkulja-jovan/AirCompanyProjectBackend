@@ -9,9 +9,11 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class SearchResponseDto {
+public class DetailFlight {
 	
-	private List<LetDto> polazniLetovi;
-	private List<LetDto> povratniLetovi;
+	
+	private List<UslugaDto> usluge;
+	private Double cena;
+	private KlasaDto klasa;
 
 }

@@ -14,19 +14,23 @@ import AirlineJPA.Let;
 public interface LetRepository extends JpaRepository<Let, Integer>{
 	
 	@Query(""" 
-			select l from Let l inner join l.aviokompanija.avions where l.podacileta.aerodrom1.idAerodrom like :idAerodromPol and l.podacileta.aerodrom2.idAerodrom like :idAerodromDol
+			select l from Let l inner join l.aviokompanija.avions where l.podacileta.aerodrom1.idAerodrom like :idAerodromPol and 
+																		l.podacileta.aerodrom2.idAerodrom like :idAerodromDol and
+																		l.podacileta.datumPolaska >= :datumPolaska
 			
 		   """)
 	List<Let> getAllFlightsByCriteria(@Param("idAerodromPol") Integer idAerodrom1,
-									  @Param("idAerodromDol") Integer idAerodrom2);
+									  @Param("idAerodromDol") Integer idAerodrom2,
+									  @Param("datumPolaska") Date datumPolaska);
 	
-	@Query(""" 
-			select l from Let l inner join l.uslugas u inner join l.sedistes inner join l.klasas where l.podacileta.aerodrom1.idAerodrom like :idAerodromDol
-			                      and l.podacileta.aerodrom2.idAerodrom like :idAerodromPol
-			                      and l.podacileta.datumPolaska <= :datumPolaska
-		   """)
-	List<Let> getAllReturnFlightsByCriteria(@Param("idAerodromPol") Integer idAerodrom1,
-									        @Param("idAerodromDol") Integer idAerodrom2,
-									        @Param("datumPolaska") Date datumPolaska);
+//	@Query(""" 
+//			select l from Let l inner join l.aviokompanija.avions where l.podacileta.aerodrom1.idAerodrom like :idAerodromPol and 
+//																		l.podacileta.aerodrom2.idAerodrom like :idAerodromDol and
+//																		l.podacileta.datumPolaska >= :datumDolaska
+//			
+//		   """)
+//	List<Let> getAllReturnFlightsByCriteria(@Param("idAerodromPol") Integer idAerodrom1,
+//									  		@Param("idAerodromDol") Integer idAerodrom2,
+//									  		@Param("datumDolaska") Date datumDolaska);
 
 }

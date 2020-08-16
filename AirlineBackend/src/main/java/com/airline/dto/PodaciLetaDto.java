@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PodaciLetaDto {
 	
 	private Integer idPodaci;
+	private String datumPolaska;
 	private AerodromDto aerodrom1;
 	private AerodromDto aerodrom2;
 
