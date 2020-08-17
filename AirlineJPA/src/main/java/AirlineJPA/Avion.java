@@ -79,9 +79,14 @@ public class Avion implements Serializable {
 		this.aviokompanija = aviokompanija;
 	}
 	
-	@Override
-	public String toString() {
-		return this.serijskiBroj + " | " + this.tipAviona;
+	public String getJson() {
+		return "{"
+				+ "\"idAvion\":" + this.idAvion + ","
+				+ "\"maxBrojSedista\":" + "\"" + this.maxBrojSedista + "\","
+				+ "\"serijskiBroj\":" + "\"" + this.serijskiBroj + "\","
+				+ "\"tipAviona\":" + "\"" + this.tipAviona + "\""
+				+ "}";
+				
 	}
 
 }

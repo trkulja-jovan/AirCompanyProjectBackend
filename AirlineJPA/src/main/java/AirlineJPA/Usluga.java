@@ -61,5 +61,14 @@ public class Usluga implements Serializable {
 	public void setLets(List<Let> lets) {
 		this.lets = lets;
 	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idUsluga\":" + this.idUsluga + ","
+				+ "\"cena\":" + "\"" + this.cena + "\","
+				+ "\"nazivUsluge\":" + "\"" + this.nazivUsluge + "\""
+				+ "}";
+				
+	}
 
 }

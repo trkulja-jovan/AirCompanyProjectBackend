@@ -72,5 +72,13 @@ public class Sediste implements Serializable {
 	public void setLet(Let let) {
 		this.let = let;
 	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idSediste\":" + this.idSediste + ","
+				+ "\"redniBroj\":" + "\"" + this.redniBroj + "\""
+				+ "}";
+				
+	}
 
 }
