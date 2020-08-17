@@ -10,9 +10,9 @@ import com.airline.dto.UserDto;
 @Service
 public interface ILoginService {
 	
-	ResponseEntity<TokenDto> tryToLogin(UserDto data);
-	ResponseEntity<Boolean> registerUser(FullUserDto data);
-	ResponseEntity<Boolean> checkValidity(String data);
-	ResponseEntity<Boolean> logoutUser(TokenDto data);
+	ResponseEntity<?> tryToLogin(UserDto data);
+	ResponseEntity<?> registerUser(FullUserDto data);
+	ResponseEntity<?> checkValidity(String data);
+	ResponseEntity<?> logoutUser(TokenDto data);
 
 }

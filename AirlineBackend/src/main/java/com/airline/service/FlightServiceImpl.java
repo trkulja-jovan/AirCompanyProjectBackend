@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.airline.dto.AerodromDto;
+import com.airline.dto.DetailFlight;
+import com.airline.dto.KlasaDto;
 import com.airline.dto.LetDto;
 import com.airline.dto.SearchFlightDto;
+import com.airline.dto.SedisteDto;
+import com.airline.dto.UslugaDto;
 import com.airline.interfaces.service.IFlightService;
 import com.airline.repository.AerodromRepository;
-import com.airline.repository.LetRepository;
 
 import AirlineJPA.Let;
 
@@ -23,13 +26,10 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 	@Autowired
 	private AerodromRepository aerodromRepository;
 	
-	@Autowired
-	private LetRepository letRepository;
-	
 	@Override
 	public ResponseEntity<List<AerodromDto>> getAllAirports(String token) {
 
-		if(super.isLogged(token)) {
+		if(isLogged(token)) {
 			
 			var list = aerodromRepository.findAll();
 			
@@ -41,7 +41,7 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 			return ok(airports);
 		} else {
 			
-			return super.unauthorizedRequest();
+			return unauthorizedRequest();
 		}
 	}
 	
@@ -52,15 +52,15 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 			List<Let> lets;
 			
 			if(isReturn) {
-				lets = letRepository.getAllFlightsByCriteria(data.getIdAerodromDo(), 
-						  										   data.getIdAerodromOd(),
-						  										   data.getDatumPovratka());
+				lets = letRep.getAllFlightsByCriteria(data.getIdAerodromDo(), 
+						  							  data.getIdAerodromOd(),
+						  							  data.getDatumPovratka());
 
 			} else {
 				
-				lets = letRepository.getAllFlightsByCriteria(data.getIdAerodromOd(), 
-															 data.getIdAerodromDo(),
-															 data.getDatumPolaska());
+				lets = letRep.getAllFlightsByCriteria(data.getIdAerodromOd(), 
+													  data.getIdAerodromDo(),
+													  data.getDatumPolaska());
 			}
 			
 			var newList = lets.stream()
@@ -77,21 +77,36 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 	}
 	
 	@Override
-	public ResponseEntity<?> searchDetails(String token, String idLet) {
+	public ResponseEntity<List<DetailFlight>> searchDetails(String token, String id) {
 		if(isLogged(token)) {
-			var id = -1;
+			var idLet = -1;
 			
 			try {
-				id = Integer.parseInt(idLet);
+				idLet = Integer.parseInt(id);
 			} catch(NumberFormatException e) {
 				return notAcceptable();
 			}
 			
+			var uslugas = uslugaRep.findUslugasOnLet(idLet)
+								   .stream()
+								   .map(usluga -> _mapperUsluga.mapFromJson(usluga.getJson(), UslugaDto.class))
+								   .collect(Collectors.toList());
+			
+			var klasas = klasaRep.findByIdLet(idLet)
+								 .stream()
+								 .map(klasa -> _mapperKlasa.mapFromJson(klasa.getJson(), KlasaDto.class))
+								 .collect(Collectors.toList());
+			
+			var sedistas = sedisteRep.findSedistaByIdLet(idLet)
+									 .stream()
+									 .map(sediste -> _mapperSediste.mapFromJson(sediste.getJson(), SedisteDto.class))
+									 .collect(Collectors.toList());
+			
+			//TODO: implementirati dovlacenje aviona iz baze za izabrani let
 			
 			return null;
 			
 		} else
 			return unauthorizedRequest();
 	}
-	
 }

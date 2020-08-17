@@ -18,9 +18,8 @@ public class AirlineBackendApplication {
 	@Bean
 	public WebMvcConfigurerImpl corsConfigurer() {
 
-		return registry -> {
-			registry.addMapping("/api/*").allowedOrigins("http://localhost:4200");
-		};
+		return registry -> registry.addMapping("/api/*").allowedOrigins("http://localhost:4200");
+		
 	}
 	
 	@Bean

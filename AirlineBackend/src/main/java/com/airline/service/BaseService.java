@@ -14,14 +14,24 @@ import org.springframework.http.ResponseEntity;
 
 import com.airline.dto.AerodromDto;
 import com.airline.dto.FullUserDto;
+import com.airline.dto.KlasaDto;
 import com.airline.dto.LetDto;
+import com.airline.dto.SedisteDto;
+import com.airline.dto.UslugaDto;
 import com.airline.mapper.IMapper;
+import com.airline.repository.KlasaRepository;
 import com.airline.repository.KorisnikRepository;
+import com.airline.repository.LetRepository;
 import com.airline.repository.LoginRepository;
+import com.airline.repository.SedisteRepository;
+import com.airline.repository.UslugaRepository;
 
 import AirlineJPA.Aerodrom;
+import AirlineJPA.Klasa;
 import AirlineJPA.Korisnik;
 import AirlineJPA.Let;
+import AirlineJPA.Sediste;
+import AirlineJPA.Usluga;
 
 @SuppressWarnings("rawtypes")
 public class BaseService {
@@ -29,28 +39,40 @@ public class BaseService {
 	private static Map<String, String> loginUsers;
 	
 	@Autowired
-	KorisnikRepository userR;
+	protected @Lazy KorisnikRepository userRep;
 	
 	@Autowired
-	LoginRepository loginRep;
+	protected @Lazy LoginRepository loginRep;
+	
+	@Autowired
+	protected @Lazy LetRepository letRep;
+	
+	@Autowired
+	protected @Lazy UslugaRepository uslugaRep;
+	
+	@Autowired
+	protected @Lazy KlasaRepository klasaRep;
+	
+	@Autowired
+	protected @Lazy SedisteRepository sedisteRep;
 	
 	@Autowired
 	protected @Lazy IMapper<Korisnik, FullUserDto> _mapper;
 	
-//	@Autowired
-//	protected @Lazy IMapper<Klasa, KlasaDto> _mapperKlasa;
-	
 	@Autowired
 	protected @Lazy IMapper<Aerodrom, AerodromDto> _mapperAirport;
 	
-//	@Autowired
-//	protected @Lazy IMapper<Aviokompanija, AviokompanijaDto> _mapperAviokomp;
-//	
-//	@Autowired
-//	protected @Lazy IMapper<Podacileta, PodaciLetaDto> _mapperPodaci;
-	
 	@Autowired
 	protected @Lazy IMapper<Let, LetDto> _mapperLet;
+	
+	@Autowired
+	protected @Lazy IMapper<Usluga, UslugaDto> _mapperUsluga;
+	
+	@Autowired
+	protected @Lazy IMapper<Klasa, KlasaDto> _mapperKlasa;
+	
+	@Autowired
+	protected @Lazy IMapper<Sediste, SedisteDto> _mapperSediste;
 	
 	static {
 		loginUsers = new HashMap<String, String>();
@@ -62,7 +84,7 @@ public class BaseService {
 		return true;
 	}
 	
-	protected Boolean removeLoginUser(String username, String token) {
+	protected static Boolean removeLoginUser(String username, String token) {
 		return loginUsers.remove(username, token);
 	}
 	
@@ -75,7 +97,7 @@ public class BaseService {
 				                 .findFirst()
 				                 .get();
 		
-		var usrFromRep = userR.findUserByUsername(username);
+		var usrFromRep = userRep.findUserByUsername(username);
 		
 		return _mapper.map(usrFromRep, FullUserDto.class);
 		

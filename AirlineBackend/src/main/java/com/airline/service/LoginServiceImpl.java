@@ -3,6 +3,7 @@ package com.airline.service;
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import com.airline.dto.TokenDto;
 import com.airline.dto.UserDto;
 import com.airline.interfaces.service.ILoginService;
 import com.airline.mapper.IMapper;
-import com.airline.repository.KorisnikRepository;
 
 import AirlineJPA.Korisnik;
 
@@ -21,10 +21,7 @@ import AirlineJPA.Korisnik;
 class LoginServiceImpl extends BaseService implements ILoginService {
 	
 	@Autowired
-	KorisnikRepository registerR;
-	
-	@Autowired
-	IMapper<FullUserDto, Korisnik> _mapper;
+	private @Lazy IMapper<FullUserDto, Korisnik> _mapper;
 	
 	@Override
 	public ResponseEntity<TokenDto> tryToLogin(UserDto user) {
@@ -38,10 +35,10 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			
 			super.addLoginUser(user.getUsername(), token);
 			
-			return super.ok(tokenData);
+			return ok(tokenData);
 		}
 		
-		return super.badRequest();
+		return badRequest();
 	}
 	
 	@Override
@@ -51,12 +48,11 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			
 			var user = _mapper.map(data, Korisnik.class);
 			
-			registerR.save(user);
+			userRep.save(user);
 			
-			return super.ok(true);
+			return ok(true);
 			
 		} catch(Exception e) {
-			e.printStackTrace();
 			return ResponseEntity.ok(false);
 		}
 	}
@@ -69,7 +65,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 		try {
 			var username = (String) p.object().get("username");
 			
-			return super.ok(super.existsUser(username));
+			return ok(existsUser(username));
 			
 		} catch(ParseException e) {
 			return ResponseEntity.ok(false);
@@ -84,9 +80,9 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			var username = data.getUser().getUsername();
 			var token = data.getToken();
 			
-			return super.ok(super.removeLoginUser(username, token));
+			return ok(removeLoginUser(username, token));
 		} catch(Exception e) {
-			return super.badRequest();
+			return badRequest();
 		}
 	}
 }

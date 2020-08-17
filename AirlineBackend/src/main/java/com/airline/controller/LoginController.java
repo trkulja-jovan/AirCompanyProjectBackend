@@ -20,22 +20,22 @@ public class LoginController {
 	ILoginService loginService;
 
 	@PostMapping("/loginUser")
-	public ResponseEntity<TokenDto> login(@RequestBody UserDto user){
+	public ResponseEntity<?> login(@RequestBody UserDto user){
 		return loginService.tryToLogin(user);
 	}
 	
 	@PostMapping("/register")
-	public ResponseEntity<Boolean> register(@RequestBody FullUserDto fullUser){
+	public ResponseEntity<?> register(@RequestBody FullUserDto fullUser){
 		return loginService.registerUser(fullUser);
 	}
 	
 	@PostMapping("/checkValidity")
-	public ResponseEntity<Boolean> checkValidityOfUsername(@RequestBody String value){
+	public ResponseEntity<?> checkValidityOfUsername(@RequestBody String value){
 		return loginService.checkValidity(value);
 	}
 	
 	@PostMapping("/logout")
-	public ResponseEntity<Boolean> logoutUser(@RequestBody TokenDto data){
+	public ResponseEntity<?> logoutUser(@RequestBody TokenDto data){
 		return loginService.logoutUser(data);
 	}
 
