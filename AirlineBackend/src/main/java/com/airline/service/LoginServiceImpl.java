@@ -33,7 +33,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			tokenData.setToken(token);
 			tokenData.setUser(user);
 			
-			super.addLoginUser(user.getUsername(), token);
+			super.addUser(user.getUsername(), token);
 			
 			return ok(tokenData);
 		}
@@ -80,7 +80,7 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 			var username = data.getUser().getUsername();
 			var token = data.getToken();
 			
-			return ok(removeLoginUser(username, token));
+			return ok(removeLoggedUser(username, token));
 		} catch(Exception e) {
 			return badRequest();
 		}

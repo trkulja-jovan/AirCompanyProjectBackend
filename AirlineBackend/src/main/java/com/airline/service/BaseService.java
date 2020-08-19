@@ -19,6 +19,7 @@ import com.airline.dto.LetDto;
 import com.airline.dto.SedisteDto;
 import com.airline.dto.UslugaDto;
 import com.airline.mapper.IMapper;
+import com.airline.repository.KartaRepository;
 import com.airline.repository.KlasaRepository;
 import com.airline.repository.KorisnikRepository;
 import com.airline.repository.LetRepository;
@@ -36,7 +37,7 @@ import AirlineJPA.Usluga;
 @SuppressWarnings("rawtypes")
 public class BaseService {
 	
-	private static Map<String, String> loginUsers;
+	private static Map<String, String> loggedUser;
 	
 	@Autowired
 	protected @Lazy KorisnikRepository userRep;
@@ -57,6 +58,9 @@ public class BaseService {
 	protected @Lazy SedisteRepository sedisteRep;
 	
 	@Autowired
+	protected @Lazy KartaRepository kartaRep;
+	
+	@Autowired
 	protected @Lazy IMapper<Korisnik, FullUserDto> _mapper;
 	
 	@Autowired
@@ -75,36 +79,32 @@ public class BaseService {
 	protected @Lazy IMapper<Sediste, SedisteDto> _mapperSediste;
 	
 	static {
-		loginUsers = new HashMap<String, String>();
+		loggedUser = new HashMap<String, String>();
 	}
 	
-	protected Boolean addLoginUser(String username, String token) {
+	protected Boolean addUser(String username, String token) {
 		
-		loginUsers.put(username, token);
+		loggedUser.put(username, token);
 		return true;
 	}
 	
-	protected static Boolean removeLoginUser(String username, String token) {
-		return loginUsers.remove(username, token);
+	protected static Boolean removeLoggedUser(String username, String token) {
+		return loggedUser.remove(username, token);
 	}
 	
-	protected FullUserDto getUserForToken(String token) {
+	protected String getUserForToken(String token) {
 		
-		var username = loginUsers.entrySet()
-				                 .stream()
-				                 .filter(x -> x.getValue().equals(token))
-				                 .map(Map.Entry::getKey)
-				                 .findFirst()
-				                 .get();
-		
-		var usrFromRep = userRep.findUserByUsername(username);
-		
-		return _mapper.map(usrFromRep, FullUserDto.class);
+		return loggedUser.entrySet()
+				         .stream()
+				         .filter(x -> x.getValue().equals(token))
+				         .map(Map.Entry::getKey)
+				         .findFirst()
+				         .get();
 		
 	}
 	
 	protected static Boolean isLogged(String token) {
-		return loginUsers.containsValue(token);
+		return loggedUser.containsValue(token);
 	}
 	
 	protected Boolean existsUserByPassword(String username, String password) {

@@ -17,5 +17,7 @@ public class FullUserDto {
 	private String jmbg;
 	private String prezime;
 	private UserDto logindata;
+	
+	
 
 }

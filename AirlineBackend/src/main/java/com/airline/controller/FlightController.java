@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.airline.dto.Rezervacija;
 import com.airline.dto.SearchFlightDto;
 import com.airline.interfaces.service.IFlightService;
 
@@ -41,7 +42,13 @@ public class FlightController {
 	@GetMapping("/details/{idLet}")
 	public ResponseEntity<?> searchDetails(@RequestHeader(name="Authorization") String token,
 										   @PathVariable String idLet){
-		return null;
+		return service.searchDetails(token, idLet);
+	}
+	
+	@PostMapping("/reserve")
+	public ResponseEntity<?> reserveTicket(@RequestHeader(name="Authorization") String token,
+										   @RequestBody Rezervacija rezervacija){
+		return service.reserveFlight(token, rezervacija);
 	}
 
 }

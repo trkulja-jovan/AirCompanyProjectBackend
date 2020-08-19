@@ -17,6 +17,6 @@ public class DetailFlight {
 	private List<SedisteDto> sedista;
 	
 	private Double cena;
-	private AvionDto avion;
+	private Integer idLet;
 
 }

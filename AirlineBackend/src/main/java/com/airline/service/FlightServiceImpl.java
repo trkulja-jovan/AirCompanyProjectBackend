@@ -11,12 +11,14 @@ import com.airline.dto.AerodromDto;
 import com.airline.dto.DetailFlight;
 import com.airline.dto.KlasaDto;
 import com.airline.dto.LetDto;
+import com.airline.dto.Rezervacija;
 import com.airline.dto.SearchFlightDto;
 import com.airline.dto.SedisteDto;
 import com.airline.dto.UslugaDto;
 import com.airline.interfaces.service.IFlightService;
 import com.airline.repository.AerodromRepository;
 
+import AirlineJPA.Karta;
 import AirlineJPA.Let;
 
 @Service
@@ -77,7 +79,7 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 	}
 	
 	@Override
-	public ResponseEntity<List<DetailFlight>> searchDetails(String token, String id) {
+	public ResponseEntity<DetailFlight> searchDetails(String token, String id) {
 		if(isLogged(token)) {
 			var idLet = -1;
 			
@@ -102,10 +104,48 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 									 .map(sediste -> _mapperSediste.mapFromJson(sediste.getJson(), SedisteDto.class))
 									 .collect(Collectors.toList());
 			
-			//TODO: implementirati dovlacenje aviona iz baze za izabrani let
+			var cenaUsl = uslugas.stream()
+					             .collect(Collectors.averagingDouble(UslugaDto::getCena));
 			
-			return null;
+			var cena = cenaUsl + 1500;
 			
+			var flight = new DetailFlight();
+			
+			flight.setCena(cena);
+			flight.setKlasa(klasas);
+			flight.setUsluge(uslugas);
+			flight.setSedista(sedistas);
+			flight.setIdLet(idLet);
+			
+			return ok(flight);
+			
+		} else
+			return unauthorizedRequest();
+	}
+	
+	@Override
+	public ResponseEntity<String> reserveFlight(String token, Rezervacija rezervacija) {
+		if(isLogged(token)) {
+			
+			var username = getUserForToken(token);
+			
+			var korisnik = userRep.findUserByUsername(username);
+			var sediste = sedisteRep.findById(rezervacija.getIdSediste()).get();
+			var let = letRep.findById(rezervacija.getIdLet()).get();
+			
+			var brojKarte = (Math.random() * 12) + "_" + username;
+			
+			var karta = new Karta();
+			
+			karta.setBrojKarte(brojKarte);
+			karta.setSediste(sediste);
+			karta.setKorisnik(korisnik);
+			karta.setLet(let);
+			
+			if(kartaRep.save(karta) != null)
+				return ok(brojKarte);
+			else
+				return badRequest();
 		} else
 			return unauthorizedRequest();
 	}
