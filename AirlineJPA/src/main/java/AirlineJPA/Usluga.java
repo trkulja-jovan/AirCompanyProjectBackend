@@ -1,8 +1,14 @@
 package AirlineJPA;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -20,7 +26,6 @@ public class Usluga implements Serializable {
 
 	private double cena;
 
-	@Column(name="naziv_usluge")
 	private String nazivUsluge;
 
 	//bi-directional many-to-many association to Let
