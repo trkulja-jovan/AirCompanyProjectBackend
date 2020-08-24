@@ -2,15 +2,12 @@ package AirlineJPA;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 
@@ -40,20 +37,8 @@ public class Karta implements Serializable {
 	@ManyToOne
 	@JsonBackReference
 	private Korisnik korisnik;
-	
-	@OneToOne(cascade = {CascadeType.ALL})
-	@JoinColumn(name="idKarta")
-	private Sediste sediste;
 
 	public Karta() {
-	}
-	
-	public Sediste getSediste() {
-		return this.sediste;
-	}
-	
-	public void setSediste(Sediste sediste) {
-		this.sediste = sediste;
 	}
 	
 	public Korisnik getKorisnik() {
@@ -94,6 +79,16 @@ public class Karta implements Serializable {
 
 	public void setLet(Let let) {
 		this.let = let;
+	}
+	
+	public String getJson() {
+		return "{"
+				+ "\"idKarta\":" + this.idKarta + ","
+				+ "\"brojKarte\":" + "\"" + this.brojKarte + "\","
+				+ "\"cena\":" + "\"" + this.cena + "\","
+				+ "\"let\":" + this.let.getJson()
+				+ "}";
+				
 	}
 
 }

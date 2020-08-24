@@ -2,15 +2,12 @@ package AirlineJPA;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 
@@ -26,14 +23,9 @@ public class Sediste implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(columnDefinition = "int default 1")
 	private int idSediste;
 
 	private int redniBroj;
-
-	//bi-directional one-to-one association to Karta
-	@OneToOne(mappedBy="sediste", cascade = {CascadeType.ALL})
-	private Karta karta;
 
 	//bi-directional many-to-one association to Let
 	@ManyToOne
@@ -57,14 +49,6 @@ public class Sediste implements Serializable {
 
 	public void setRedniBroj(int redniBroj) {
 		this.redniBroj = redniBroj;
-	}
-
-	public Karta getKarta() {
-		return this.karta;
-	}
-
-	public void setKarta(Karta karta) {
-		this.karta = karta;
 	}
 
 	public Let getLet() {
