@@ -15,7 +15,5 @@ public class SearchFlightDto {
 	private Integer idAerodromDo;
 	private Date datumPolaska;
 	private Date datumPovratka;
-	private Integer brPutnika;
-	private Integer brDece;
 
 }

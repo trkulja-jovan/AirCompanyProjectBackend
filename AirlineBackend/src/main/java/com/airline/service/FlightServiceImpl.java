@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.airline.dto.AerodromDto;
 import com.airline.dto.DetailFlight;
+import com.airline.dto.KartaDto;
 import com.airline.dto.KlasaDto;
 import com.airline.dto.LetDto;
 import com.airline.dto.Rezervacija;
 import com.airline.dto.SearchFlightDto;
-import com.airline.dto.SedisteDto;
 import com.airline.dto.UslugaDto;
 import com.airline.interfaces.service.IFlightService;
 import com.airline.repository.AerodromRepository;
@@ -99,11 +99,6 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 								 .map(klasa -> _mapperKlasa.mapFromJson(klasa.getJson(), KlasaDto.class))
 								 .collect(Collectors.toList());
 			
-			var sedistas = sedisteRep.findSedistaByIdLet(idLet)
-									 .stream()
-									 .map(sediste -> _mapperSediste.mapFromJson(sediste.getJson(), SedisteDto.class))
-									 .collect(Collectors.toList());
-			
 			var cenaUsl = uslugas.stream()
 					             .collect(Collectors.averagingDouble(UslugaDto::getCena));
 			
@@ -114,7 +109,6 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 			flight.setCena(cena);
 			flight.setKlasa(klasas);
 			flight.setUsluge(uslugas);
-			flight.setSedista(sedistas);
 			flight.setIdLet(idLet);
 			
 			return ok(flight);
@@ -124,28 +118,50 @@ class FlightServiceImpl extends BaseService implements IFlightService {
 	}
 	
 	@Override
-	public ResponseEntity<String> reserveFlight(String token, Rezervacija rezervacija) {
+	public ResponseEntity<Boolean> reserveFlight(String token, Rezervacija rezervacija) {
 		if(isLogged(token)) {
 			
 			var username = getUserForToken(token);
 			
 			var korisnik = userRep.findUserByUsername(username);
-			var sediste = sedisteRep.findById(rezervacija.getIdSediste()).get();
 			var let = letRep.findById(rezervacija.getIdLet()).get();
 			
-			var brojKarte = (Math.random() * 12) + "_" + username;
+			var brojKarte = (Math.random() * 6) + "_" + username;
 			
 			var karta = new Karta();
 			
 			karta.setBrojKarte(brojKarte);
-			karta.setSediste(sediste);
 			karta.setKorisnik(korisnik);
 			karta.setLet(let);
+			karta.setCena(rezervacija.getCena());
 			
 			if(kartaRep.save(karta) != null)
-				return ok(brojKarte);
+				return ok(true);
 			else
 				return badRequest();
+		} else
+			return unauthorizedRequest();
+	}
+	
+	@Override
+	public ResponseEntity<List<KartaDto>> historyDetails(String token, String username) {
+		if(isLogged(token)) {
+			
+			var list = kartaRep.getAllKartasByCriteria(username)
+							   .stream()
+							   .map(k -> _mapperKarta.mapFromJson(k.getJson(), KartaDto.class))
+							   .collect(Collectors.toList());
+			
+			return ok(list);
+		} else
+			return unauthorizedRequest();
+	}
+	
+	@Override
+	public ResponseEntity<Boolean> checkIn(String token, String oznakaLeta) {
+		if(isLogged(token)) {
+			
+			return ok(true);
 		} else
 			return unauthorizedRequest();
 	}

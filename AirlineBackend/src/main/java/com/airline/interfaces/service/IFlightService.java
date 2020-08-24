@@ -13,4 +13,6 @@ public interface IFlightService {
 	ResponseEntity<?> searchFlights(String token, SearchFlightDto data, Boolean isReturn);
 	ResponseEntity<?> searchDetails(String token, String idLet);
 	ResponseEntity<?> reserveFlight(String token, Rezervacija rezervacija);
+	ResponseEntity<?> historyDetails(String token, String username);
+	ResponseEntity<?> checkIn(String token, String oznakaLeta);
 }

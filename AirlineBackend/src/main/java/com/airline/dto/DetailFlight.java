@@ -14,7 +14,6 @@ public class DetailFlight {
 	
 	private List<UslugaDto> usluge;
 	private List<KlasaDto> klasa;
-	private List<SedisteDto> sedista;
 	
 	private Double cena;
 	private Integer idLet;

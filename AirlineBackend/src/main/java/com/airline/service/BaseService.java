@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.airline.dto.AerodromDto;
 import com.airline.dto.FullUserDto;
+import com.airline.dto.KartaDto;
 import com.airline.dto.KlasaDto;
 import com.airline.dto.LetDto;
-import com.airline.dto.SedisteDto;
 import com.airline.dto.UslugaDto;
 import com.airline.mapper.IMapper;
 import com.airline.repository.KartaRepository;
@@ -24,14 +24,13 @@ import com.airline.repository.KlasaRepository;
 import com.airline.repository.KorisnikRepository;
 import com.airline.repository.LetRepository;
 import com.airline.repository.LoginRepository;
-import com.airline.repository.SedisteRepository;
 import com.airline.repository.UslugaRepository;
 
 import AirlineJPA.Aerodrom;
+import AirlineJPA.Karta;
 import AirlineJPA.Klasa;
 import AirlineJPA.Korisnik;
 import AirlineJPA.Let;
-import AirlineJPA.Sediste;
 import AirlineJPA.Usluga;
 
 @SuppressWarnings("rawtypes")
@@ -55,9 +54,6 @@ public class BaseService {
 	protected @Lazy KlasaRepository klasaRep;
 	
 	@Autowired
-	protected @Lazy SedisteRepository sedisteRep;
-	
-	@Autowired
 	protected @Lazy KartaRepository kartaRep;
 	
 	@Autowired
@@ -76,7 +72,7 @@ public class BaseService {
 	protected @Lazy IMapper<Klasa, KlasaDto> _mapperKlasa;
 	
 	@Autowired
-	protected @Lazy IMapper<Sediste, SedisteDto> _mapperSediste;
+	protected @Lazy IMapper<Karta, KartaDto> _mapperKarta;
 	
 	static {
 		loggedUser = new HashMap<String, String>();

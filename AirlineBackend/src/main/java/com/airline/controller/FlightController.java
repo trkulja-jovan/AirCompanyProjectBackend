@@ -39,16 +39,28 @@ public class FlightController {
 		return service.searchFlights(token, data, true);
 	}
 	
+	@PostMapping("/reserve")
+	public ResponseEntity<?> reserveTicket(@RequestHeader(name="Authorization") String token,
+										   @RequestBody Rezervacija rezervacija){
+		return service.reserveFlight(token, rezervacija);
+	}
+	
+	@GetMapping("/checkIn/{oznakaLeta}")
+	public ResponseEntity<?> checkIn(@RequestHeader(name="Authorization") String token,
+									 @PathVariable String oznakaLeta){
+		return service.checkIn(token, oznakaLeta);
+	}
+	
 	@GetMapping("/details/{idLet}")
 	public ResponseEntity<?> searchDetails(@RequestHeader(name="Authorization") String token,
 										   @PathVariable String idLet){
 		return service.searchDetails(token, idLet);
 	}
 	
-	@PostMapping("/reserve")
-	public ResponseEntity<?> reserveTicket(@RequestHeader(name="Authorization") String token,
-										   @RequestBody Rezervacija rezervacija){
-		return service.reserveFlight(token, rezervacija);
+	@GetMapping("/history/{username}")
+	public ResponseEntity<?> getHistoryDetails(@RequestHeader(name="Authorization") String token,
+											   @PathVariable String username){
+		return service.historyDetails(token, username);
 	}
 
 }

@@ -7,9 +7,11 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Rezervacija {
+public class KartaDto {
 	
-	private Integer idLet;
+	private Integer idKarta;
+	private String brojKarte;
 	private Double cena;
+	private LetDto let;
 
 }
