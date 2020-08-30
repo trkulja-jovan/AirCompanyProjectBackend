@@ -26,14 +26,14 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 	@Override
 	public ResponseEntity<TokenDto> tryToLogin(UserDto user) {
 		
-		if(super.existsUserByPassword(user.getUsername(), user.getPassword())) {
+		if(existsUserByPassword(user.getUsername(), user.getPassword())) {
 			var token = BCrypt.gensalt(31);
 			
 			var tokenData = new TokenDto();
 			tokenData.setToken(token);
 			tokenData.setUser(user);
 			
-			super.addUser(user.getUsername(), token);
+			addUser(user.getUsername(), token);
 			
 			return ok(tokenData);
 		}
@@ -65,10 +65,10 @@ class LoginServiceImpl extends BaseService implements ILoginService {
 		try {
 			var username = (String) p.object().get("username");
 			
-			return ok(existsUser(username));
+			return existsUser(username) ? ok(true) : badRequest();
 			
 		} catch(ParseException e) {
-			return ResponseEntity.ok(false);
+			return badRequest();
 		}
 		
 	}

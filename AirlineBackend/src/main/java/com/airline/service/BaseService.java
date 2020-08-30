@@ -103,6 +103,10 @@ public class BaseService {
 		return loggedUser.containsValue(token);
 	}
 	
+	protected String getPasswordForUsername(String username) {
+		return loginRep.getPasswordByUsername(username).getPassword();
+	}
+	
 	protected Boolean existsUserByPassword(String username, String password) {
 		return loginRep.existsLogindataByUsernameAndPassword(username, password) != null;
 	}

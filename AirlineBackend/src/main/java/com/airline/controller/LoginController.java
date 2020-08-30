@@ -38,5 +38,4 @@ public class LoginController {
 	public ResponseEntity<?> logoutUser(@RequestBody TokenDto data){
 		return loginService.logoutUser(data);
 	}
-
 }
